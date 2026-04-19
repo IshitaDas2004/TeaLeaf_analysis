@@ -1,0 +1,9 @@
+﻿venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+instance/
+teadiagnosticx.db
+*.db
+.DS_Store

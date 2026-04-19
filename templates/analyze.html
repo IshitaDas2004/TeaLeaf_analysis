@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analyze Leaf - TeaDiagnostix</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🌿 <span>TeaDiagnosticX</span></div>
+    <a href="/" style="text-decoration:none;">Home</a>
+</nav>
+
+<section class="hero">
+    <h1>Analyze Tea Leaf</h1>
+
+    <form id="uploadForm">
+        <input type="file" id="fileInput" name="file" required>
+        <br><br>
+        <button type="submit" class="btn-primary">Predict</button>
+    </form>
+
+    <div id="result" class="result-box"></div>
+</section>
+
+<footer class="footer">
+    TeaDiagnosticX System – University Project Evaluation
+</footer>
+
+<script>
+document.getElementById("uploadForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const fileInput = document.getElementById("fileInput");
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    const response = await fetch("/predict", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await response.json();
+
+    document.getElementById("result").innerHTML =
+        `<h3>Prediction: ${data.prediction}</h3>
+         <p>Confidence: ${data.confidence}%</p>
+         <p><b>Treatment:</b> ${data.treatment}</p>`;
+});
+</script>
+
+</body>
+</html>
