@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register – TeaDiagnosticX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-deep: #1a3a2a;
+            --green-mid: #2d5a3d;
+            --green-light: #4a8c5c;
+            --green-pale: #a8c5a0;
+            --cream: #f5f0e8;
+            --cream-dark: #ede5d4;
+            --gold: #c9a84c;
+            --gold-light: #e8cc7a;
+            --text-dark: #1a1a14;
+            --text-mid: #4a4a3a;
+            --error: #e05c5c;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* LEFT — form */
+        .form-panel {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 4rem 3rem;
+            background: var(--cream);
+            overflow-y: auto;
+        }
+        .form-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem; font-weight: 600;
+            color: var(--green-deep); margin-bottom: 3rem;
+            text-decoration: none;
+        }
+        .form-logo span { color: var(--gold); }
+
+        .form-box { width: 100%; max-width: 400px; }
+        .form-box h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem; font-weight: 400;
+            color: var(--green-deep); margin-bottom: 0.4rem;
+        }
+        .form-box > p {
+            font-size: 0.85rem; color: var(--text-mid);
+            font-weight: 300; margin-bottom: 2.5rem;
+        }
+
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        .form-group { margin-bottom: 1.3rem; }
+        .form-group label {
+            display: block;
+            font-size: 0.72rem; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--text-mid);
+            margin-bottom: 0.5rem; font-weight: 500;
+        }
+        .form-group input, .form-group select {
+            width: 100%; padding: 0.85rem 1rem;
+            background: white;
+            border: 1.5px solid rgba(26, 58, 42, 0.15);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem; color: var(--text-dark);
+            outline: none; transition: border-color 0.3s;
+            appearance: none;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--green-mid);
+        }
+        .form-group input::placeholder { color: rgba(74, 74, 58, 0.4); }
+
+        .strength-wrap { margin-top: 0.4rem; }
+        .strength-bar {
+            height: 3px; background: rgba(26, 58, 42, 0.1);
+            margin-bottom: 0.3rem;
+        }
+        .strength-fill {
+            height: 100%; width: 0; transition: width 0.4s, background 0.4s;
+        }
+        .strength-text { font-size: 0.7rem; color: var(--text-mid); }
+
+        .terms {
+            display: flex; align-items: flex-start; gap: 0.6rem;
+            margin-bottom: 2rem; font-size: 0.82rem; color: var(--text-mid); font-weight: 300;
+        }
+        .terms input { width: auto; margin-top: 2px; flex-shrink: 0; }
+        .terms a { color: var(--green-mid); }
+
+        .btn-submit {
+            width: 100%; padding: 1rem;
+            background: var(--green-deep); color: var(--cream);
+            border: none; font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem; font-weight: 500;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            cursor: pointer; transition: all 0.3s;
+            margin-bottom: 1.5rem;
+        }
+        .btn-submit:hover { background: var(--green-mid); }
+
+        .alt-link {
+            text-align: center; font-size: 0.85rem;
+            color: var(--text-mid); font-weight: 300;
+        }
+        .alt-link a { color: var(--green-mid); text-decoration: none; font-weight: 500; }
+        .alt-link a:hover { color: var(--gold); }
+
+        .flash {
+            padding: 0.8rem 1rem; margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+        }
+        .flash.error { background: rgba(224, 92, 92, 0.1); border: 1px solid rgba(224, 92, 92, 0.3); color: var(--error); }
+        .flash.success { background: rgba(74, 140, 92, 0.1); border: 1px solid rgba(74, 140, 92, 0.3); color: var(--green-mid); }
+
+        /* RIGHT — decorative */
+        .deco-panel {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start;
+            padding: 4rem;
+            background: linear-gradient(160deg, #0f2618 0%, #1a3a2a 60%, #243d1e 100%);
+            border-left: 1px solid rgba(201, 168, 76, 0.12);
+            position: relative; overflow: hidden;
+        }
+        .deco-panel::before {
+            content: '';
+            position: absolute; top: -20%; left: -20%;
+            width: 70%; height: 70%; border-radius: 50%;
+            border: 1px solid rgba(201, 168, 76, 0.07);
+        }
+        .deco-leaf {
+            font-size: 10rem; opacity: 0.05;
+            position: absolute; top: 10%; right: -2%;
+            animation: float 9s ease-in-out infinite;
+        }
+        .deco-leaf2 {
+            font-size: 6rem; opacity: 0.05;
+            position: absolute; bottom: 15%; left: 5%;
+            animation: float 6s ease-in-out infinite reverse;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        .deco-badge {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border: 1px solid rgba(201, 168, 76, 0.4);
+            border-radius: 2rem;
+            font-size: 0.7rem; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--gold);
+            margin-bottom: 2rem; z-index: 1;
+        }
+        .deco-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem; font-weight: 300;
+            color: var(--cream); line-height: 1.2;
+            margin-bottom: 2rem; z-index: 1;
+        }
+        .deco-title em { font-style: italic; color: var(--gold-light); }
+        .perks { list-style: none; z-index: 1; }
+        .perks li {
+            display: flex; align-items: flex-start; gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.88rem; color: var(--green-pale);
+            font-weight: 300; line-height: 1.6;
+        }
+        .perks li span:first-child { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+        @media (max-width: 768px) {
+            body { grid-template-columns: 1fr; }
+            .deco-panel { display: none; }
+            .form-panel { padding: 2.5rem 1.5rem; }
+            .row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LEFT — FORM -->
+<div class="form-panel">
+    <a href="/" class="form-logo">🌿 Tea<span>DiagnosticX</span></a>
+
+    <div class="form-box">
+        <h2>Create Account</h2>
+        <p>Join TeaDiagnosticX to save your analyses and track plant health over time.</p>
+
+        {% Create your account ----> Login ----> Analyze ----> Prediction  %}
+            {% Doubts to Clarity %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="/register">
+            <div class="row">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" name="first_name" placeholder="Arjun" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" name="last_name" placeholder="Das" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" placeholder="+91 98765 43210">
+            </div>
+
+            <div class="form-group">
+                <label>Location / Garden Name</label>
+                <input type="text" name="location" placeholder="Darjeeling Tea Estate">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" id="password" placeholder="Min. 8 characters" required minlength="8">
+                <div class="strength-wrap">
+                    <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+                    <div class="strength-text" id="strength-text">Enter a password</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" name="confirm_password" id="confirm_password" placeholder="••••••••" required>
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" name="terms" required>
+                <span>I agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>. My data may be used to improve the model.</span>
+            </div>
+
+            <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+
+        <div class="alt-link">Already have an account? <a href="/login">Sign in</a></div>
+    </div>
+</div>
+
+<!-- RIGHT — DECORATIVE -->
+<div class="deco-panel">
+    <div class="deco-badge">Free to Join</div>
+    <h2 class="deco-title">Protect your<br><em>tea garden</em><br>with AI.</h2>
+    <ul class="perks">
+        <li><span>✅</span><span>Instant disease diagnosis from a photo</span></li>
+        <li><span>📋</span><span>Full analysis history saved to your account</span></li>
+        <li><span>💊</span><span>Specific treatment recommendations per disease</span></li>
+        <li><span>📈</span><span>Track health trends in your garden over time</span></li>
+        <li><span>🔒</span><span>Your images and data are stored securely</span></li>
+    </ul>
+    <div class="deco-leaf">🌿</div>
+    <div class="deco-leaf2">🍃</div>
+</div>
+
+<script>
+    const pwInput  = document.getElementById('password');
+    const fill     = document.getElementById('strength-fill');
+    const txt      = document.getElementById('strength-text');
+    const colors   = ['#e05c5c','#e8a24c','#c9a84c','#4a8c5c'];
+    const labels   = ['Too short','Weak','Fair','Strong'];
+
+    pwInput.addEventListener('input', () => {
+        const v = pwInput.value;
+        let score = 0;
+        if (v.length >= 8) score++;
+        if (/[A-Z]/.test(v)) score++;
+        if (/[0-9]/.test(v)) score++;
+        if (/[^A-Za-z0-9]/.test(v)) score++;
+        fill.style.width = (score * 25) + '%';
+        fill.style.background = colors[score - 1] || '#e05c5c';
+        txt.textContent = labels[score - 1] || 'Enter a password';
+        txt.style.color = colors[score - 1] || '#e05c5c';
+    });
+</script>
+</body>
+</html>

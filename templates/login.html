@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login – TeaDiagnosticX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-deep: #1a3a2a;
+            --green-mid: #2d5a3d;
+            --green-light: #4a8c5c;
+            --green-pale: #a8c5a0;
+            --cream: #f5f0e8;
+            --cream-dark: #ede5d4;
+            --gold: #c9a84c;
+            --gold-light: #e8cc7a;
+            --text-dark: #1a1a14;
+            --text-mid: #4a4a3a;
+            --error: #e05c5c;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--green-deep);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* LEFT — decorative */
+        .deco-panel {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start;
+            padding: 4rem;
+            background: linear-gradient(160deg, #0f2618 0%, #1a3a2a 100%);
+            border-right: 1px solid rgba(201, 168, 76, 0.12);
+            position: relative; overflow: hidden;
+        }
+        .deco-panel::before {
+            content: '';
+            position: absolute; bottom: -20%; right: -20%;
+            width: 70%; height: 70%; border-radius: 50%;
+            border: 1px solid rgba(201, 168, 76, 0.07);
+        }
+        .deco-panel::after {
+            content: '';
+            position: absolute; top: -10%; left: -10%;
+            width: 60%; height: 60%; border-radius: 50%;
+            border: 1px solid rgba(168, 197, 160, 0.07);
+        }
+        .deco-leaf {
+            font-size: 8rem; opacity: 0.06;
+            position: absolute; bottom: 10%; right: 10%;
+            animation: float 7s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        .deco-badge {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border: 1px solid rgba(201, 168, 76, 0.4);
+            border-radius: 2rem;
+            font-size: 0.7rem; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--gold);
+            margin-bottom: 2rem; z-index: 1;
+        }
+        .deco-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem; font-weight: 300;
+            color: var(--cream); line-height: 1.15;
+            margin-bottom: 1.2rem; z-index: 1;
+        }
+        .deco-title em { font-style: italic; color: var(--gold-light); }
+        .deco-desc {
+            font-size: 0.9rem; color: var(--green-pale);
+            font-weight: 300; line-height: 1.8;
+            max-width: 320px; z-index: 1;
+        }
+
+        /* RIGHT — form */
+        .form-panel {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 4rem 3rem;
+            background: var(--cream);
+        }
+        .form-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem; font-weight: 600;
+            color: var(--green-deep); margin-bottom: 3rem;
+            text-decoration: none;
+        }
+        .form-logo span { color: var(--gold); }
+
+        .form-box { width: 100%; max-width: 380px; }
+        .form-box h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem; font-weight: 400;
+            color: var(--green-deep); margin-bottom: 0.4rem;
+        }
+        .form-box p {
+            font-size: 0.85rem; color: var(--text-mid);
+            font-weight: 300; margin-bottom: 2.5rem;
+        }
+
+        .form-group { margin-bottom: 1.4rem; }
+        .form-group label {
+            display: block;
+            font-size: 0.72rem; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--text-mid);
+            margin-bottom: 0.5rem; font-weight: 500;
+        }
+        .form-group input {
+            width: 100%; padding: 0.85rem 1rem;
+            background: white;
+            border: 1.5px solid rgba(26, 58, 42, 0.15);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem; color: var(--text-dark);
+            outline: none; transition: border-color 0.3s;
+        }
+        .form-group input:focus { border-color: var(--green-mid); }
+        .form-group input::placeholder { color: rgba(74, 74, 58, 0.4); }
+
+        .form-options {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 2rem; font-size: 0.82rem;
+        }
+        .remember { display: flex; align-items: center; gap: 0.4rem; color: var(--text-mid); }
+        .remember input { width: auto; }
+        .forgot { color: var(--green-mid); text-decoration: none; }
+        .forgot:hover { color: var(--gold); }
+
+        .btn-submit {
+            width: 100%; padding: 1rem;
+            background: var(--green-deep); color: var(--cream);
+            border: none; font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem; font-weight: 500;
+            letter-spacing: 0.18em; text-transform: uppercase;
+            cursor: pointer; transition: all 0.3s;
+            margin-bottom: 1.5rem;
+        }
+        .btn-submit:hover { background: var(--green-mid); }
+
+        .divider {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .divider::before, .divider::after {
+            content: ''; flex: 1; height: 1px;
+            background: rgba(26, 58, 42, 0.12);
+        }
+        .divider span { font-size: 0.75rem; color: var(--text-mid); }
+
+        .alt-link {
+            text-align: center; font-size: 0.85rem;
+            color: var(--text-mid); font-weight: 300;
+        }
+        .alt-link a { color: var(--green-mid); text-decoration: none; font-weight: 500; }
+        .alt-link a:hover { color: var(--gold); }
+
+        .flash { 
+            padding: 0.8rem 1rem; margin-bottom: 1.5rem;
+            font-size: 0.85rem; font-weight: 400;
+        }
+        .flash.error { background: rgba(224, 92, 92, 0.1); border: 1px solid rgba(224, 92, 92, 0.3); color: var(--error); }
+        .flash.success { background: rgba(74, 140, 92, 0.1); border: 1px solid rgba(74, 140, 92, 0.3); color: var(--green-mid); }
+
+        @media (max-width: 768px) {
+            body { grid-template-columns: 1fr; }
+            .deco-panel { display: none; }
+            .form-panel { padding: 3rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- DECORATIVE LEFT PANEL -->
+<div class="deco-panel">
+    <div class="deco-badge">Tea Plant Pathology</div>
+    <h1 class="deco-title">Welcome<br><em>back.</em></h1>
+    <p class="deco-desc">Log into your TeaDiagnosticX account to access your leaf analysis history and continue protecting your tea garden.</p>
+    <div class="deco-leaf">🍃</div>
+</div>
+
+<!-- FORM RIGHT PANEL -->
+<div class="form-panel">
+    <a href="/" class="form-logo">🌿 Tea<span>DiagnosticX</span></a>
+
+    <div class="form-box">
+        <h2>Sign In</h2>
+        <p>Enter your credentials to access your account.</p>
+
+        {% Welcome Back !! %}
+            {% Login to start a new analysis %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form method="POST" action="/login">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="form-options">
+                <label class="remember">
+                    <input type="checkbox" name="remember"> Remember me
+                </label>
+                <a href="#" class="forgot">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn-submit">Sign In</button>
+        </form>
+
+        <div class="divider"><span>or</span></div>
+        <div class="alt-link">Don't have an account? <a href="/register">Create one free</a></div>
+    </div>
+</div>
+
+</body>
+</html>
